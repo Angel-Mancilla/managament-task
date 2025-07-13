@@ -6,16 +6,20 @@ class AuthService {
 
     }
 
+    async getMe() : Promise <Response>
+    {   
+        const url_api = "http://localhost:8000/api/me"
+        return await fetch(url_api,{
+            credentials:'include'
+        })
+    }
+
     async getTokenCsrf() : Promise <void>
     {
         const url_api_sanctum = "http://localhost:8000/sanctum/csrf-cookie"
         await fetch(url_api_sanctum,{
             credentials: 'include'
         })
-
-        
-        
-        
     }
 
     async  tokenDecode() : Promise <string>

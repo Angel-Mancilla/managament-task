@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AuthView from '../views/AuthView.vue'
 import { useAuthStore } from '@/stores/auth'
+import type { ComputedRef } from 'vue'
 
 
 
@@ -38,21 +39,16 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach( (to, from) => {
       const authStore =  useAuthStore()
-      const auth = await authStore.authenticated
-
-      if ( to.meta.authenticated && !auth ) {
-
-        return { name:'auth'}
+      const auth =  authStore.isAuthenticated
+      console.log(auth)
       
+      if ( to.meta.authenticated && !auth ) {
+        return { name:'auth'}
       } else {
-
        return true
       }
-
-    
-
     })
 
 export default router

@@ -1,12 +1,12 @@
 import  AuthService from '@/service/AuthService'
-import {ref} from 'vue'
+import {ref, computed, type ComputedRef} from 'vue'
 import {defineStore} from 'pinia'
 
 export const useAuthStore = defineStore('auth', () => {
      const user = ref(null)
      const error = ref('')
      const successfully = ref('')
-     const authenticated = ref(false)
+     const isAuthenticated: ComputedRef<boolean> =  computed(() => !!user.value) // convierto el valor en booleano segun sea su contenido)
 
 
      const authService = new AuthService()
@@ -32,6 +32,28 @@ export const useAuthStore = defineStore('auth', () => {
         
     }
 
+    async function checkout()
+    {
+        try {
+           
+            
+            const response = await authService.getMe()
+            if(!response.ok){
+                user.value = null
+            } else {
+                
+                const data =  await response.json()
+                
+                user.value = data
+                // console.log(user)
+                 console.log('user tiene esto: '+ !!user.value +' authenticated tiene esto: '+ isAuthenticated.value);
+            }
+        } catch (error) {
+            user.value = null
+        }
+        
+    }
+
     async function logout() 
     {
         try {
@@ -46,7 +68,6 @@ export const useAuthStore = defineStore('auth', () => {
             const data = await response.json()
             successfully.value = data.message
             // console.log(successfully);
-            
             user.value = null
             return true
         } catch (e) {
@@ -57,5 +78,5 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    return {user, error, authenticated, successfully, login, logout}
+    return {user, error, isAuthenticated, successfully, login, logout, checkout}
 })

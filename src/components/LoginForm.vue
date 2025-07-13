@@ -41,7 +41,7 @@
             return 
         }
         // authenticated.value = true
-        auth.authenticated = true
+        // auth.authenticated = true
         alert(auth.successfully)
         router.push({name: 'home'})
         return 

@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { onMounted } from 'vue';
+import { useAuthStore } from './stores/auth';
+
+const auth = useAuthStore()
+
+onMounted(() => {
+  auth.checkout()
+})
+
 </script>
 
 <template>
